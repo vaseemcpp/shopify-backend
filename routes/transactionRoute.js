@@ -12,7 +12,7 @@ const {
 
 router.post("/transferFund", express.json(), protect, transferFund);
 router.post("/verifyAccount", express.json(), protect, verifyAccount);
-router.post(
+router.get(
   "/getUserTransactions",
   express.json(),
   protect,

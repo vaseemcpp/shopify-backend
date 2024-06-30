@@ -49,11 +49,17 @@ const verifyAccount = asyncHandler(async (req, res) => {
     res.status(404);
     throw new Error("User Account not found");
   }
-  res.status(200).json({ message: "Account Verification Successful" });
+  res.status(200).json({ 
+    receiverName:user.name,
+    message: "Account Verification Successful" });
 });
 
 // getUserTransactions
 const getUserTransactions = asyncHandler(async (req, res) => {
+    // if (req.user.email !== req.body.email) {
+    //     res.status(404)
+    //     throw new Error("User Account not found")
+    // }
   const transactions = await Transaction.find({
     $or: [{ sender: req.body.email }, { receiver: req.body.email }],
   })
@@ -62,6 +68,8 @@ const getUserTransactions = asyncHandler(async (req, res) => {
     .populate("receiver");
 
   res.status(200).json(transactions);
+
+
 });
 
 // Deposit Funds With Stripe
@@ -86,8 +94,8 @@ const depositFundStripe = asyncHandler(async (req, res) => {
         price_data: {
           currency: "usd",
           product_data: {
-            name: "Shopito Wallet Deposit",
-            description: `Make a deposit of $${amount} to shopito wallet`,
+            name: "Shopify Wallet Deposit",
+            description: `Make a deposit of $${amount} to shopify wallet`,
           },
           unit_amount: amount * 100,
         },
@@ -96,8 +104,8 @@ const depositFundStripe = asyncHandler(async (req, res) => {
     ],
     customer: user.stripeCustomerId,
     success_url:
-      process.env.FRONTEND_URL + `/wallet?payment=successful&amount=${amount}`,
-    cancel_url: process.env.FRONTEND_URL + "/wallet?payment=failed",
+    `${process.env.FRONTEND_URL}/wallet?payment=successful&amount=${amount}`,
+    cancel_url: `${process.env.FRONTEND_URL}/wallet?payment=failed`,
   });
 
   // console.log(session);
@@ -137,7 +145,7 @@ const depositFund = async (customer, data, description, source) => {
 const endpointSecret = process.env.STRIPE_ENDPOINT_SECRET;
 
 const webhook = asyncHandler(async (req, res) => {
-  console.log("Webhook start");
+//   console.log("Webhook start");
   const sig = req.headers["stripe-signature"];
 
   let event;

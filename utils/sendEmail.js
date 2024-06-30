@@ -1,7 +1,7 @@
 const nodemailer = require("nodemailer");
 const MailGen = require("mailgen");
 
-const sendEmail = async (subject, send_to, template, reply_to, cc) => {
+const sendEmail = async(subject, send_to, template, reply_to, cc) => {
   // Create Email Transporter
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -10,11 +10,11 @@ const sendEmail = async (subject, send_to, template, reply_to, cc) => {
     auth: {
       user: process.env.EMAIL_USER,
       pass: process.env.EMAIL_PASS,
-    },
+    }
     // tls: {
     //   rejectUnauthorized: false,
     // },
-  });
+ });
 
   // Create Template With MailGen
   const mailGenerator = new MailGen({
