@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.urlencoded({ extended: false}));
 app.use(
 cors({
-    origin: ["http://localhost:3000", "https://eshopifyapp.vercel.app"],
+    origin: ["https://eshopifyapp.vercel.app"],
     credentials: true,
 })
 );
